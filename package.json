@@ -1,0 +1,40 @@
+{
+  "name": "Pastemin",
+  "version": "0.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon dist/server/server.js"
+  },
+  "repository": "",
+  "author": "",
+  "license": "BSD",
+  "dependencies": {
+    "express": "*",
+    "react": "*",
+    "knox": "*",
+    "highland": "*",
+    "superagent": "*",
+    "redis": "*",
+    "connect": "~2.13.0",
+    "uglify-js": "~2.4.12",
+    "zlib": "~1.0.5"
+  },
+  "devDependencies": {
+    "gulp": "*",
+    "gulp-util": "*",
+    "gulp-browserify": "*",
+    "gulp-uglify": "*",
+    "gulp-react": "*",
+    "gulp-cached": "*",
+    "gulp-gzip": "*",
+    "gulp-livereload": "*",
+    "gulp-stylus": "*",
+    "gulp-minify-css": "*",
+    "gulp-jshint": "*",
+    "gulp-clean": "*",
+    "reactify": "*",
+    "nodemon": "*",
+    "tiny-lr": "*"
+  }
+}

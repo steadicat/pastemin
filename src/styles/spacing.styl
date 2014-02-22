@@ -1,0 +1,44 @@
+// Spacing
+//
+// This defines classes for standard margins and padding, of the type
+// '.mts', where each letter defines, respectively, type (margin vs
+// padding), direction, and size, as follows.
+//
+// First character (type):
+// m: margin
+// p: padding
+//
+// Second character (direction):
+// t: top
+// r: right
+// b: bottom
+// l: left
+// h: horizontal (left and right)
+// v: vertical (top and bottom)
+// a: all
+//
+// Third character (size):
+// s: small (unit * 1)
+// m: medium (unit * 2)
+// l: large (unit * 4)
+// h: huge (unit * 8)
+
+unit = 4
+sizes = s m l h
+types = { m: 'margin', p: 'padding' }
+directions = { t: 'top', r: 'right', b: 'bottom', l: 'left' }
+
+for s, i in sizes
+  for t, type in types
+    for d, direction in directions
+      .{t}{d}{s}
+        {type}-{direction} (i+1) * unit
+    .{t}h{s}
+      @extend .{t}l{s}
+      @extend .{t}r{s}
+    .{t}v{s}
+      @extend .{t}t{s}
+      @extend .{t}b{s}
+    .{t}a{s}
+      @extend .{t}h{s}
+      @extend .{t}v{s}
