@@ -5,9 +5,13 @@ var SuperAgent = require('superagent');
 var Button = require('../components/Button');
 var Page = require('../components/Page');
 var Editor = require('../components/Editor');
+var Header = require('../components/Header');
 var Toolbar = require('../components/Toolbar');
 var Random = require('../lib/Random');
 var Func = require('../lib/Func');
+
+var HEADER = 174;
+var TOOLBAR = 45;
 
 var Home = React.createClass({
 
@@ -24,31 +28,26 @@ var Home = React.createClass({
   render: function() {
     return (
       <Page title="Pastemin: asset editor and host" props={this.props}>
-        <div className="fixed fill top-left" style={{paddingTop: 210}}>
+        <div className="fixed fill top-left" style={{paddingTop: HEADER + TOOLBAR}}>
           <Editor
             language={this.state.language}
             text={this.props.content}
             onChange={this.onChange}
           />
         </div>
-        <div className="fixed full-width top-left">
-          <div className="pvh phh center">
-            <h1 className="text-xl title mtl">Pastemin</h1>
-            <h2 className="text-l subtitle">Instant assets.</h2>
-            <a className="text-s purple mth block pointer">Read more</a>
-          </div>
-          <Toolbar
-            id={this.state.id}
-            language={this.state.language}
-            cdn={this.state.cdn}
-            onCdnToggle={this.onCdnToggle}
-            published={!this.state.changed}
-            publishedUrl={this.state.publishedUrl}
-            onLanguageChange={this.onLanguageChange}
-            onPublish={this.onPublish}
-            className="phh"
-          />
-        </div>
+        <Toolbar
+          id={this.state.id}
+          language={this.state.language}
+          cdn={this.state.cdn}
+          onCdnToggle={this.onCdnToggle}
+          published={!this.state.changed}
+          publishedUrl={this.state.publishedUrl}
+          onLanguageChange={this.onLanguageChange}
+          onPublish={this.onPublish}
+          className="phl abs full-width border-box"
+          style={{top: HEADER}}
+        />
+        <Header className="fixed full-width top-left z1" headerHeight={HEADER} />
       </Page>
     );
   },
@@ -77,7 +76,6 @@ var Home = React.createClass({
       .put('/' + this.state.id)
       .set('Accept', 'application/json')
       .send(data).end(function(res) {
-        console.log(res.body);
         this.setState({
           changed: !res.body.published,
           publishedUrl: res.body.url

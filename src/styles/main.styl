@@ -13,24 +13,28 @@ html
   font-family 'Source Code Pro', monospace
 .b
   font-weight bold
+.serif
+  font-family 'Playfair Display', sans-serif
 .title
-  font-family 'Playfair Display', sans-serif
-  font-weight: 900
+  @extend .serif
+  font-weight 900
 .subtitle
-  font-family 'Playfair Display', sans-serif
-  font-style: italic
-  font-weight: 400
+  @extend .serif
+  font-style italic
+  font-weight 400
 .text-xs
   size 10, unit * 2
 .text-s
   size 12, unit * 2
+.text-m
+  size 18, unit * 3
 .text-l
   size 24, unit * 4
 .text-xl
   size unit * 8, unit * 8
 
 .nowrap
-  whitespace: nowrap
+  whitespace nowrap
 
 // Cursors
 .pointer
@@ -42,6 +46,7 @@ colors = {
   white: #fff,
   purple: #81549f,
   gray: #aeafad,
+  light-gray: lighten(#aeafad, 50%),
   green: #718c00,
   black: #4d4d4c
 }
@@ -81,9 +86,24 @@ for name, color in colors
     @extend .{name}-bg
     border-width 1px
 
+a
+  @extend .purple
+
+.bt
+  border-width: 1px 0 0 0
+.br
+  border-width: 0 1px 0 0
+.bb
+  border-width: 0 0 1px 0
+.bl
+  border-width: 0 0 0 1px
+
 #editor
-  width: 100%
-  height: 100%
+  width 100%
+  height 100%
+
+.hidden
+  opacity 0
 
 // Forms
 
@@ -96,8 +116,9 @@ for name, color in colors
   line-height 16px
 
 .t-width
-  transition: 0.1s width
-
+  transition width 0.1s
+.t-height
+  transition height 0.5s ease-in-out
 
 @require layout
 @require spacing

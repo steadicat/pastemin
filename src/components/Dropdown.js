@@ -26,7 +26,7 @@ var Dropdown = React.createClass({
     if (this.state.expanded) {
       menu =
         <div
-          className="abs z100 white-bg gray-border rounded-rb pvm"
+          className="abs z100 white-bg gray-border rounded-rb"
           style={{
             marginTop: -1,
             borderTopColor: '#aeafad',
@@ -35,12 +35,12 @@ var Dropdown = React.createClass({
           {this.getGroups(this.props.options).map(function(group) {
             return (
               <div key={group}>
-                <div className="gray phl">{group}</div>
+                <div className="gray phm">{group}</div>
                 {this.getOptions(group).map(function(option) {
                   return (
                     <div
                       key={option.id}
-                      className={'pointer plh phl' + (this.state.hovered && (this.state.hovered.id == option.id) && (this.state.hovered.group == option.group) ? ' gray-bg white' : '')}
+                      className={'pointer pll prm' + (this.state.hovered && (this.state.hovered.id == option.id) && (this.state.hovered.group == option.group) ? ' gray-bg white' : '')}
                       onMouseOver={this.onOptionHover.bind(this, option)}
                       onClick={this.onOptionClick.bind(this, option)}>
                       {option.name}
@@ -62,14 +62,14 @@ var Dropdown = React.createClass({
           onMouseOut={this.onMouseOut}
           className={this.state.expanded ? 'rounded-top' : ''}>
           <div className="ib mid">{this.props.label}:&nbsp;</div>
-          <div className={'ib mid prm ' + ((this.state.hover||this.state.expanded) ? 'white white-border' : 'black gray-border')}  style={{borderWidth: '0 1px 0 0'}}>
+          <div className={'ib mid prm br ' + ((this.state.hover||this.state.expanded) ? 'white white-border' : 'black gray-border')}>
             {this.state.selected && this.state.selected.name}
           </div>
           <Icon
             icon="chevron"
             color={(this.state.hover || this.state.expanded) ? 'white' : 'gray'}
             className="ib mid rel"
-            style={{left: '3px'}}
+            style={{left: 12, marginLeft: -8}}
           />
         </Button>
         {menu}

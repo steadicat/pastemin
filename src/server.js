@@ -3,10 +3,12 @@
 var sys = require('sys');
 var express = require('express');
 var connect = require('connect');
+var connectDomain = require('connect-domain');
 var app = express();
 
-app.use(express.logger());
-app.use(express.json());
+//app.use(connectDomain());
+app.use(connect.logger());
+app.use(connect.json());
 app.use(connect.favicon());
 app.use(connect.errorHandler());
 

@@ -28,11 +28,20 @@ sizes = s m l h
 types = { m: 'margin', p: 'padding' }
 directions = { t: 'top', r: 'right', b: 'bottom', l: 'left' }
 
+pow(base, exp)
+  res = 1
+  if exp == 0
+    res
+  else
+    for i in (0..exp)
+      res = res * base
+    res
+
 for s, i in sizes
   for t, type in types
     for d, direction in directions
       .{t}{d}{s}
-        {type}-{direction} (i+1) * unit px
+        {type}-{direction} pow(2, i) * unit px
     .{t}h{s}
       @extend .{t}l{s}
       @extend .{t}r{s}

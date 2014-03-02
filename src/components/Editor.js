@@ -2,7 +2,7 @@
 
 var React = require('react');
 
-var defaultText = '// Type the code of your asset here...\n\n\n';
+var defaultText = '/* Type the code of your asset here. */\n\n\n';
 
 var Editor = React.createClass({
 
@@ -23,7 +23,7 @@ var Editor = React.createClass({
       editor.setHighlightActiveLine(false);
       editor.setShowPrintMargin(false);
       editor.renderer.setShowGutter(false);
-      editor.renderer.setPadding(20);
+      editor.renderer.setPadding(32);
       editor.session.setUseWrapMode(true);
       editor.session.setTabSize(2);
       editor.session.on('change', this.onChange);

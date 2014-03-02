@@ -38,14 +38,14 @@ var Button = React.createClass({
     return this.transferPropsTo(
       <a
         role="button"
-        className={'button center rel ib pointer phm pvs button-' + colorName + (fill ? '-fill' : '')}
+        className={'button center rel ib pointer phm pvs border-box button-' + colorName + (fill ? '-fill' : '')}
         onMouseOver={this.onMouseOver}
         onMouseOut={this.onMouseOut}>
         {progress}
         {icon && <Icon icon={icon} color={iconColor} className="ib mid z1" style={{marginBottom: -1, marginLeft: -2}} />}
-        <div className={'ib mid z1' + (this.props.icon ? ' mls' : '')}>
+        <span className={'ib mid' + (this.props.icon ? ' mls' : '')}>
           {this.props.children}
-        </div>
+        </span>
       </a>
     );
   }

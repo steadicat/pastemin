@@ -2,6 +2,7 @@
 
 var React = require('react');
 var Button = require('./Button');
+var Output = require('./Output');
 
 var Publish = React.createClass({
 
@@ -13,16 +14,13 @@ var Publish = React.createClass({
   },
 
   render: function() {
-    var width = 320;
+    var width = 270;
     if (this.props.published) {
       return this.transferPropsTo(
-        <input
-          type="text"
-          readOnly="true"
+        <Output
           value={this.props.url}
-          className="input ib bottom text-xs"
+          className="text-xs"
           style={{width: width}}
-          onClick={this.onUrlClick}
         />
       );
     } else {
@@ -39,12 +37,8 @@ var Publish = React.createClass({
     }
   },
 
-  onUrlClick: function(event) {
-    event.target.select();
-  },
-
-  componentDidUpdate: function() {
-    if (this.props.published) this.getDOMNode().select();
+  componentDidUpdate: function(prevProps) {
+    if (!prevProps.published && this.props.published) this.getDOMNode().select();
   },
 
   onPublish: function(event) {
