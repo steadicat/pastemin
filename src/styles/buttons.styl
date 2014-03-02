@@ -1,0 +1,17 @@
+@require colors
+@require borders
+
+.button
+  @extend .rounded
+  line-height 18px
+
+for name, color in all_colors
+  .button-{name}
+    @extend .{name}
+    @extend .{name}-border
+    border-width 1px
+  .button-{name}-fill
+    @extend .white
+    @extend .{name}-border
+    @extend .{name}-bg
+    border-width 1px

@@ -19,7 +19,7 @@ var Publish = React.createClass({
       return this.transferPropsTo(
         <Output
           value={this.props.url}
-          className="text-xs"
+          className="text-s"
           style={{width: width}}
         />
       );

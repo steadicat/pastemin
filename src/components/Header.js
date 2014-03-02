@@ -13,12 +13,12 @@ var Header = React.createClass({
 
   render: function() {
     return this.transferPropsTo(
-      <div className="white-bg scroll transition-height" style={{height: this.state.expanded ? '100%' : this.props.headerHeight}}>
+      <div className="white-bg scroll t-height" style={{height: this.state.expanded ? '100%' : this.props.headerHeight}}>
         <div className="phh center">
           <h1 className="text-xl title ptl">Pastemin</h1>
           <h2 className="text-l subtitle">Instant assets.</h2>
           <a
-            className={'text-s purple mts block pointer' + (this.state.expanded ? '' : '')}
+            className={'purple ib pas block pointer' + (this.state.expanded ? '' : '')}
             onClick={this.toggle}>{this.state.expanded ? 'Go back' : 'Read more'}</a>
           {this.renderMore()}
         </div>
@@ -39,7 +39,7 @@ var Header = React.createClass({
     if (!this.state.expanded) return null;
     return (
       <div className="pvh">
-        <p className="mvh text-l ib serif" style={{maxWidth: 600}}>
+        <p className="mvh text-l ib serif" style={{maxWidth: 580}}>
           The easiest way to create, update, and serve one-off JS and CSS files for user styles, JSFiddle, etc.
         </p>
 

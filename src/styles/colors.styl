@@ -1,0 +1,21 @@
+all_colors = {
+  white: #fff,
+  purple: #81549f,
+  gray: #aeafad,
+  light-gray: lighten(#aeafad, 50%),
+  green: #718c00,
+  black: #4d4d4c
+}
+
+for name, color in all_colors
+  .{name}
+    color color
+  .{name}-border
+    border 1px solid color
+  .{name}-bg
+    background color
+
+html
+  @extend .black
+a
+  @extend .purple
