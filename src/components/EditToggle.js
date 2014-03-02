@@ -1,7 +1,7 @@
 /** @jsx React.DOM **/
 
 var React = require('react');
-var Icon = require('../components/Icon');
+var Button = require('../components/Button');
 
 var EditToggle = React.createClass({
 
@@ -11,15 +11,9 @@ var EditToggle = React.createClass({
 
   render: function() {
     return this.transferPropsTo(
-      <a role="button" className="pointer" onClick={this.toggle}>
-        <Icon
-          icon={this.state.locked ? 'lock' : 'unlock'}
-          className="ib mid"
-        />
-        <div className="ib mid mls">
-          {this.state.locked ? 'Password needed to edit' : 'Anyone can edit' }
-        </div>
-      </a>
+      <Button onClick={this.toggle} color="gray" icon={this.state.locked ? 'lock' : 'unlock'}>
+        {this.state.locked ? 'Password needed to edit' : 'Anyone can edit' }
+      </Button>
     );
   },
 

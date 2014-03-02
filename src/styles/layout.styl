@@ -1,84 +1,87 @@
 @require nib
 
+// Z
+
+.z1
+  position relative
+  z-index 1
+.z100
+  position relative
+  z-index 100
+
 // Basics
 
 .block
-  display: block
+  display block
 .ib
-  display: inline-block
+  display inline-block
 .bb
-  box-sizing: border-box
+  box-sizing border-box
 .rel
-  position: relative
+  position relative
 .abs
-  position: absolute
+  position absolute
 .fixed
-  position: fixed
-  transform: translateZ(0)
+  position fixed
+  transform translateZ(0)
 .crop
-  overflow: hidden
+  overflow hidden
 
 // Alignment
 
 .center
-  text-align: center
+  text-align center
 .left
-  text-align: left
+  text-align left
 .right
-  text-align: right
+  text-align right
 .centered
-  margin-left: auto
-  margin-right: auto
+  margin-left auto
+  margin-right auto
 .mid
-  vertical-align: middle
+  vertical-align middle
 .top
-  vertical-align: top
+  vertical-align top
+.bottom
+  vertical-align bottom
 .valign-parent
-  display: table
+  display table
 .valign
-  display: table-cell
-  vertical-align: middle
+  display table-cell
+  vertical-align middle
 .float
-  float: left
+  float left
 
 // Position
 
 .zero
-  top: 0
-  right: 0
-  bottom: 0
-  left: 0
+  top 0
+  right 0
+  bottom 0
+  left 0
 .top-left
-  top: 0
-  left: 0
+  top 0
+  left 0
 .top-right
-  top: 0
-  right: 0
+  top 0
+  right 0
 .bottom-left
-  bottom: 0
-  left: 0
+  bottom 0
+  left 0
 .bottom-right
-  bottom: 0
-  right: 0
+  bottom 0
+  right 0
 .offscreen
   @extend .abs
-  top: -10000px
+  top -10000px
 
 // Size
 
 .full-width
-  width: 100%
+  width 100%
 .full-height
-  height: 100%
+  height 100%
 .fill
   @extend .full-width
   @extend .full-height
 
-// Z
-
-.z1
-  position: relative
-  z-index: 1
-.z100
-  position: relative
-  z-index: 100

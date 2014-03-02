@@ -1,8 +1,11 @@
 /** @jsx React.DOM **/
 
 var React = require('react');
-var EditToggle = require('../components/EditToggle');
-var LanguageMenu = require('../components/LanguageMenu');
+var EditToggle = require('./EditToggle');
+var LanguageMenu = require('./LanguageMenu');
+var CdnToggle = require('./CdnToggle');
+var Publish = require('./Publish');
+var Button = require('./Button');
 
 var extensions = {
   'javascript': 'js',
@@ -12,24 +15,28 @@ var extensions = {
 var Toolbar = React.createClass({
 
   render: function() {
+    var editToggle = <EditToggle icon="unlock" className="ib bottom mlm" />;
+    editToggle = null;
+
     return this.transferPropsTo(
-      <div className="text-s pbm">
-        <div className="ib mid" style={{width: 160}}>
-          <div>Language</div>
-          <LanguageMenu onSelect={this.props.onLanguageChange} />
-        </div>
-        <label className="ib mid pointer" style={{width: 240}}>
-          <input type="checkbox" className="ib top" />
-          <div className="ib top pls">
-            <div>Use CloudFront</div>
-            <div className="text-xs gray">URL will change with each update</div>
-          </div>
-        </label>
-        <EditToggle icon="unlock" className="ib mid" style={{width: 160}} />
-        <div className="ib mid" style={{width: 320}}>
-          <div>Public URL</div>
-          <input type="text" readOnly="true" value={'http://pastemin.com/' + this.props.id + '.' + extensions[this.props.language]} className="pas" style={{width: 320}} />
-        </div>
+      <div className="pbm nowrap gray-border" style={{borderWidth: '0 0 1px 0'}}>
+        <LanguageMenu
+          className="ib mid"
+          language={this.props.language}
+          onSelect={this.props.onLanguageChange}
+        />
+        <CdnToggle
+          className="ib mid mlm"
+          cdn={this.props.cdn}
+          onCdnToggle={this.props.onCdnToggle}
+        />
+        {editToggle}
+        <Publish
+          url={'http://pastemin.com/' + this.props.id + '.' + extensions[this.props.language]}
+          published={this.props.published}
+          cdn={this.props.cdn}
+          className="ib mid mlm"
+        />
       </div>
     )
   }

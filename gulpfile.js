@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var gulpUtil = require('gulp-util');
+var gutil = require('gulp-util');
 var browserify = require('gulp-browserify');
 var uglify = require('gulp-uglify');
 var react = require('gulp-react');
@@ -22,13 +22,15 @@ gulp.task('styles', function() {
     .pipe(minifycss())
     .pipe(gzip())
     .pipe(gulp.dest('dist/assets/css'))
-    .pipe(livereload(server));
+    .pipe(livereload(server))
+    .on('error', gutil.log);
 });
 
 gulp.task('images', function() {
   return gulp.src('src/images/**/*')
     .pipe(gulp.dest('dist/assets/img'))
-    .pipe(livereload(server));
+    .pipe(livereload(server))
+    .on('error', gutil.log);
 });
 
 // browserify + minify + jsx + gzip + cache
@@ -36,32 +38,41 @@ gulp.task('client', function() {
   gulp.src('src/pages/**/*')
     .pipe(browserify({
       insertGlobals: false,
-      debug: !gulpUtil.env.production,
+      debug: !gutil.env.production,
       transform: ['reactify']
     }))
+    .on('error', gutil.log)
     //.pipe(jshint('.jshintrc'))
     //.pipe(jshint.reporter('default'))
-    .pipe(gulpUtil.env.type === 'production' ? uglify() : gulpUtil.noop())
+    .pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
     .pipe(gzip())
     .pipe(gulp.dest('dist/assets/js/pages'))
-    .pipe(livereload(server));
+    .pipe(livereload(server))
+    .on('error', gutil.log);
 });
 
 gulp.task('server', function() {
   gulp.src('src/pages/**/*')
     .pipe(react())
-    .pipe(gulp.dest('dist/server/pages'));
+    .on('error', gutil.log)
+    .pipe(gulp.dest('dist/server/pages'))
+    .on('error', gutil.log);
   gulp.src('src/components/**/*')
     .pipe(react())
-    .pipe(gulp.dest('dist/server/components'));
+    .on('error', gutil.log)
+    .pipe(gulp.dest('dist/server/components'))
+    .on('error', gutil.log);
   gulp.src('src/*.js')
     .pipe(react())
-    .pipe(gulp.dest('dist/server'));
+    .on('error', gutil.log)
+    .pipe(gulp.dest('dist/server'))
+    .on('error', gutil.log);
 });
 
 gulp.task('clean', function() {
   return gulp.src(['dist/css', 'dist/js', 'dist/img', 'dist/server'], {read: false})
-    .pipe(clean());
+    .pipe(clean())
+    .on('error', gutil.log);
 });
 
 gulp.task('watch', function () {
@@ -73,7 +84,8 @@ gulp.task('watch', function () {
 
 gulp.task('vendor', function() {
   gulp.src('src/vendor/ace/*')
-    .pipe(gulp.dest('dist/assets/js/vendor/ace'));
+    .pipe(gulp.dest('dist/assets/js/vendor/ace'))
+    .on('error', gutil.log);
 });
 
 gulp.task('livereload', function() {

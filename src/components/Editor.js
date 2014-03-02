@@ -22,10 +22,12 @@ var Editor = React.createClass({
       var editor = this._editor = ace.edit('editor');
       editor.setTheme('ace/theme/tomorrow');
       editor.session.setMode('ace/mode/' + this.props.language);
-      editor.setFontSize(12);
+      editor.setFontSize(14);
       editor.setHighlightActiveLine(false);
       editor.setShowPrintMargin(false);
       editor.renderer.setShowGutter(false);
+      editor.renderer.setPadding(20);
+      editor.session.setUseWrapMode(true);
       editor.session.setTabSize(2);
       editor.session.on('change', this.onChange);
     }

@@ -2,6 +2,7 @@
 
 var React = require('react');
 var SuperAgent = require('superagent');
+var Button = require('../components/Button');
 var Page = require('../components/Page');
 var Editor = require('../components/Editor');
 var Toolbar = require('../components/Toolbar');
@@ -30,41 +31,72 @@ function debounce(f, rate) {
 }
 
 var Home = React.createClass({
+
   getInitialState: function() {
     return {
-      language: 'javascript',
-      id: this.props.id
+      id: this.props.id,
+      language: this.props.language || 'javascript',
+      cdn: this.props.cdn,
+      changed: !this.props.published
     };
   },
 
   render: function() {
     return (
-      <Page title="Pastemin - asset editor and host" props={this.props}>
-        <div className="pbm">
-          <h1 className="b ib">Pastemin</h1>
-          <h2 className="ib">&nbsp;a host for your assets</h2>
+      <Page title="Pastemin: asset editor and host" props={this.props}>
+        <div className="pvm phh">
+          <h1 className="b ib text-l">Pastemin</h1>
+          <h2 className="ib text-l">: instant assets</h2>
+          <a className="text-s purple mlm pointer">Read more</a>
+          <Button
+            icon="new"
+            color="green"
+            className="mam ib bottom abs top-right"
+            href="/">
+            New
+          </Button>
         </div>
-        <Toolbar id={this.state.id} language={this.state.language} onLanguageChange={this.onLanguageChange} />
-        <Editor language={this.state.language} text={this.props.content} onChange={this.onChange} />
+        <Toolbar
+          id={this.state.id}
+          language={this.state.language}
+          cdn={this.state.cdn}
+          onCdnToggle={this.onCdnToggle}
+          published={!this.state.changed}
+          onLanguageChange={this.onLanguageChange}
+          className="phh mbl"
+        />
+        <Editor
+          language={this.state.language}
+          text={this.props.content}
+          onChange={this.onChange}
+        />
       </Page>
     );
   },
 
   onLanguageChange: function(language) {
     this.setState({language: language});
+    this.save({language: language});
+  },
+
+  onCdnToggle: function(cdn) {
+    this.setState({cdn: cdn});
+    this.save({cdn: cdn});
   },
 
   onChange: debounce(function(content) {
+    this.setState({changed: true});
+    this.save({content: content});
+  }, 2000),
+
+  save: function(data) {
     SuperAgent
       .put('/' + this.state.id)
       .set('Accept', 'application/json')
-      .send({
-        language: this.state.language,
-        content: content
-      }).end(function(res) {
+      .send(data).end(function(res) {
         console.log(res);
       });
-  }, 2000),
+  },
 
   componentDidMount: function() {
     if (!this.state.id) {

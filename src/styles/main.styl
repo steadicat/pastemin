@@ -4,25 +4,88 @@ unit = 8px
 
 // Type
 size(font, line)
-  font-size font
-  line-height line
+  font-size font px
+  line-height line px
 html
-  font-family Oxygen, sans-serif
-  type 16 unit * 3
+  font-family 'Montserrat', sans-serif
+  size 12, unit * 3
+#editor.ace_editor
+  font-family 'Source Code Pro', monospace
 .b
   font-weight bold
 .text-s
   size 12, unit * 2
 .text-xs
   size 10, unit * 2
+.text-l
+  size 24, unit * 3
 
-// Color
-.gray
-  color #aeafad
+.nowrap
+  whitespace: nowrap
 
 // Cursors
 .pointer
   cursor pointer
+
+// Color
+
+colors = {
+  white: #fff,
+  purple: #81549f,
+  gray: #aeafad,
+  green: #718c00,
+  black: #4d4d4c
+}
+
+for name, color in colors
+  .{name}
+    color color
+  .{name}-border
+    border 1px solid color
+  .{name}-bg
+    background color
+
+html
+  @extend .black
+
+// Buttons
+.rounded
+  border-radius 5px
+.rounded-bottom
+  border-radius 0 0 5px 5px
+.rounded-top
+  border-radius 5px 5px 0 0
+.rounded-rb
+  border-radius 0 5px 5px 5px
+.button
+  @extend .rounded
+  line-height 18px
+
+for name, color in colors
+  .button-{name}
+    @extend .{name}
+    @extend .{name}-border
+    border-width 1px
+  .button-{name}-fill
+    @extend .white
+    @extend .{name}-border
+    @extend .{name}-bg
+    border-width 1px
+
+
+// Forms
+
+.input
+  @extend .gray-border
+  @extend .rounded
+  @extend .gray
+  padding 6px 8px 5px
+  margin 0
+  line-height 16px
+
+.t-width
+  transition: 0.1s width
+
 
 @require layout
 @require spacing

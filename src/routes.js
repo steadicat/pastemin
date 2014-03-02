@@ -7,7 +7,7 @@ var React = require('react');
 var Asset = require('./asset');
 var Home = require('./pages/home');
 
-var uglify = function(src) {
+function uglify(src) {
   try {
     var code = uglifyJs.minify(src, {
       fromString: true,
@@ -21,6 +21,20 @@ var uglify = function(src) {
 };
 
 var gzip = _.wrapCallback(zlib.gzip);
+
+var languages = {
+  js: {
+    language: 'javascript',
+    type: 'text/javascript',
+    process: function(x) { return x; }
+  },
+  css: {
+    language: 'css',
+    type: 'text/css',
+    process: uglify
+  }
+};
+
 
 module.exports = {
   init: function(app) {
@@ -63,12 +77,13 @@ module.exports = {
       res.send(404, '<pre>Not found.</pre>');
     }
 
-    app.get(/\/([a-z0-9]*)\.js/, function(req, res) {
+    app.get(/\/([a-z0-9]*)\.([a-z]+)/, function(req, res) {
       Asset.get(req.params[0], function(err, asset) {
         if (err) return error(res, err);
-        if (asset.language !== 'javascript') return notFound(res);
-        res.set({'Content-Type': 'text/javascript'});
-        _([asset.content]).map(uglify).pipe(res);
+        var ext = req.params[1];
+        if (asset.language !== languages[ext].language) return notFound(res);
+        res.set({'Content-Type': languages[ext].mime});
+        _([asset.content]).map(languages[ext].process).pipe(res);
       });
     });
 
@@ -79,7 +94,9 @@ module.exports = {
         respond(req, res, 200, asset, Home, {
           id: id,
           language: (asset && asset.language) || undefined,
-          content: (asset && asset.content) || undefined
+          content: (asset && asset.content) || undefined,
+          cdn: asset && (asset.cdn === 'true'),
+          published: asset && (asset.published === 'true')
         });
       });
     });
@@ -87,9 +104,11 @@ module.exports = {
     app.put(/\/([a-z0-9]+)/, function(req, res) {
       var id = req.params[0];
       var asset = {
-        language: req.body.language,
-        content: req.body.content
+        published: false
       };
+      (req.body.language !== undefined) && (asset.language = req.body.language);
+      (req.body.content !== undefined) && (asset.content = req.body.content);
+      (req.body.cdn !== undefined) && (asset.cdn = req.body.cdn);
       Asset.write(id, asset, function(err, cb) {
         asset.id = id;
         res.send(200, asset);
