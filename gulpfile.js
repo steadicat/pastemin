@@ -13,7 +13,7 @@ var livereload = require('gulp-livereload');
 var lr = require('tiny-lr');
 var server = lr();
 
-var serverJs = ['src/*.js', 'src/pages/**/*', 'src/components/**/*'];
+var serverJs = ['src/*.js', 'src/pages/**/*', 'src/components/**/*', 'src/lib/**/*.js'];
 var clientJs = ['src/client.js', 'src/pages/**/*', 'src/components/**/*'];
 
 gulp.task('styles', function() {
@@ -61,6 +61,11 @@ gulp.task('server', function() {
     .pipe(react())
     .on('error', gutil.log)
     .pipe(gulp.dest('dist/server/components'))
+    .on('error', gutil.log);
+  gulp.src('src/lib/**/*')
+    .pipe(react())
+    .on('error', gutil.log)
+    .pipe(gulp.dest('dist/server/lib'))
     .on('error', gutil.log);
   gulp.src('src/*.js')
     .pipe(react())

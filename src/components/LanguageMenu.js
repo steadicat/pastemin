@@ -2,30 +2,12 @@
 
 var React = require('react');
 var Dropdown = require('./Dropdown');
-
-var languages = {
-  Standard: {
-    css: 'CSS',
-    javascript: 'JavaScript'
-  },
-  CSS: {
-    css: 'CSS',
-    sass: 'SASS',
-    scss: 'SCSS',
-    less: 'LESS',
-    stylus: 'Stylus'
-  },
-  JavaScript: {
-    javascript: 'JavaScript',
-    coffeescript: 'CoffeeScript',
-    jsx: 'JSX'
-  }
-};
+var Languages = require('../lib/Languages');
 
 var LanguageMenu = React.createClass({
   render: function() {
     return this.transferPropsTo(
-      <Dropdown label="Language" options={languages} selected={this.props.language} />
+      <Dropdown label="Language" options={Languages.byGroup} selected={this.props.language} />
     );
   }
 });

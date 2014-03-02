@@ -14,7 +14,7 @@ function s4() {
 };
 
 function guid() {
-  return s4() + s4() + s4() + s4();
+  return s4() + s4() + s4();
 }
 
 function debounce(f, rate) {
@@ -63,6 +63,7 @@ var Home = React.createClass({
           onCdnToggle={this.onCdnToggle}
           published={!this.state.changed}
           onLanguageChange={this.onLanguageChange}
+          onPublish={this.onPublish}
           className="phh mbl"
         />
         <Editor
@@ -89,13 +90,19 @@ var Home = React.createClass({
     this.save({content: content});
   }, 2000),
 
+  onPublish: function() {
+    this.setState({changed: false});
+    this.save({published: true});
+  },
+
   save: function(data) {
     SuperAgent
       .put('/' + this.state.id)
       .set('Accept', 'application/json')
       .send(data).end(function(res) {
-        console.log(res);
-      });
+        console.log(res.body);
+        this.setState({published: res.body.published});
+      }.bind(this));
   },
 
   componentDidMount: function() {

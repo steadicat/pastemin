@@ -6,11 +6,7 @@ var LanguageMenu = require('./LanguageMenu');
 var CdnToggle = require('./CdnToggle');
 var Publish = require('./Publish');
 var Button = require('./Button');
-
-var extensions = {
-  'javascript': 'js',
-  'css': 'css'
-};
+var Languages = require('../lib/Languages');
 
 var Toolbar = React.createClass({
 
@@ -32,8 +28,9 @@ var Toolbar = React.createClass({
         />
         {editToggle}
         <Publish
-          url={'http://pastemin.com/' + this.props.id + '.' + extensions[this.props.language]}
+          url={'http://pastemin.com/' + this.props.id + '.' + Languages.getExtension(this.props.language)}
           published={this.props.published}
+          onPublish={this.props.onPublish}
           cdn={this.props.cdn}
           className="ib mid mlm"
         />

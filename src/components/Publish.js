@@ -13,7 +13,7 @@ var Publish = React.createClass({
   },
 
   render: function() {
-    var width = 260;
+    var width = 240;
     if (this.props.published) {
       return this.transferPropsTo(
         <input
@@ -50,6 +50,7 @@ var Publish = React.createClass({
       progress: 0
     });
     this._interval = setInterval(this.updateProgress, 100);
+    this.props.onPublish && this.props.onPublish();
   },
 
   updateProgress: function() {
@@ -59,6 +60,12 @@ var Publish = React.createClass({
   componentWillUnmount: function() {
     clearInterval(this._interval);
   },
+
+  componentWillReceiveProps: function(nextProps) {
+    if (nextProps.published && !this.props.published) {
+      this.setState({publishing: false, progress: 100});
+    }
+  }
 
 });
 

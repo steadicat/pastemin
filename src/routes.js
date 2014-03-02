@@ -104,7 +104,7 @@ module.exports = {
     app.put(/\/([a-z0-9]+)/, function(req, res) {
       var id = req.params[0];
       var asset = {
-        published: false
+        published: !!req.body.published
       };
       (req.body.language !== undefined) && (asset.language = req.body.language);
       (req.body.content !== undefined) && (asset.content = req.body.content);
