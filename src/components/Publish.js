@@ -13,14 +13,14 @@ var Publish = React.createClass({
   },
 
   render: function() {
-    var width = 240;
+    var width = 320;
     if (this.props.published) {
       return this.transferPropsTo(
         <input
           type="text"
           readOnly="true"
           value={this.props.url}
-          className="input ib bottom"
+          className="input ib bottom text-xs"
           style={{width: width}}
           onClick={this.onUrlClick}
         />
@@ -29,7 +29,6 @@ var Publish = React.createClass({
       return this.transferPropsTo(
         <Button
           style={{width: width}}
-          fill={true}
           loading={this.state.publishing}
           progress={this.state.progress}
           onClick={this.onPublish}
@@ -42,6 +41,10 @@ var Publish = React.createClass({
 
   onUrlClick: function(event) {
     event.target.select();
+  },
+
+  componentDidUpdate: function() {
+    if (this.props.published) this.getDOMNode().select();
   },
 
   onPublish: function(event) {

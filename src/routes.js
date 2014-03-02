@@ -2,10 +2,13 @@ var _ = require('highland');
 var sys = require('sys');
 var uglifyJs = require('uglify-js');
 var zlib = require('zlib');
+var knox = require('knox');
 
 var React = require('react');
 var Asset = require('./asset');
 var Home = require('./pages/home');
+var AwsInfo = require('./lib/AwsInfo');
+var Random = require('./lib/Random');
 
 function uglify(src) {
   try {
@@ -20,17 +23,46 @@ function uglify(src) {
   }
 };
 
+var client = knox.createClient(AwsInfo);
+
+function publish(asset, callback) {
+  var lang = languages[asset.language];
+  var salt = asset.cdn ? ('.' + Random.getID()) : '';
+  var req = client.put('/' + asset.id + salt + '.' + lang.extension, {
+      'Content-Length': asset.content.length,
+      'Content-Type': lang.type,
+      'x-amz-acl': 'public-read'
+  });
+  req.on('response', function(res){
+    if (res.statusCode == 200) {
+      console.log('Saved to %s', req.url);
+      console.log(JSON.stringify(asset));
+      if (asset.cdn) {
+        callback(null, req.url.replace(AwsInfo.bucket + '.s3.amazonaws.com', AwsInfo.cloudfront));
+      } else {
+        callback(null, req.url);
+      }
+    } else {
+      console.warn(res);
+      callback(res);
+    }
+  });
+  req.end(asset.content);
+}
+
 var gzip = _.wrapCallback(zlib.gzip);
 
 var languages = {
-  js: {
+  javascript: {
     language: 'javascript',
     type: 'text/javascript',
+    extension: 'js',
     process: function(x) { return x; }
   },
   css: {
     language: 'css',
     type: 'text/css',
+    extension: 'css',
     process: uglify
   }
 };
@@ -96,23 +128,49 @@ module.exports = {
           language: (asset && asset.language) || undefined,
           content: (asset && asset.content) || undefined,
           cdn: asset && (asset.cdn === 'true'),
-          published: asset && (asset.published === 'true')
+          published: asset && (asset.published === 'true'),
+          publishedUrl: (asset && asset.url) || undefined
         });
       });
     });
 
     app.put(/\/([a-z0-9]+)/, function(req, res) {
       var id = req.params[0];
-      var asset = {
-        published: !!req.body.published
-      };
+      var asset = {};
       (req.body.language !== undefined) && (asset.language = req.body.language);
       (req.body.content !== undefined) && (asset.content = req.body.content);
       (req.body.cdn !== undefined) && (asset.cdn = req.body.cdn);
-      Asset.write(id, asset, function(err, cb) {
-        asset.id = id;
-        res.send(200, asset);
-      });
+
+      if (req.body.published) {
+        Asset.get(id, function(err, savedAsset) {
+          if (err) return error(res, err);
+          if (savedAsset) {
+            asset.language || (asset.language = savedAsset.language);
+            asset.content || (asset.content = savedAsset.content);
+            asset.cdn || (asset.cdn = (savedAsset.cdn == 'true'));
+          }
+          asset.id = id;
+
+          publish(asset, function(err, url) {
+            if (err) return error(res, err);
+            if (url) {
+              asset.published = true;
+              asset.url = url;
+            }
+            delete asset.id;
+            Asset.write(id, asset, function(err, cb) {
+              asset.id = id;
+              res.send(200, asset);
+            });
+          });
+        });
+      } else {
+        asset.published = false;
+        Asset.write(id, asset, function(err, cb) {
+          asset.id = id;
+          res.send(200, asset);
+        });
+      }
     });
 
   }

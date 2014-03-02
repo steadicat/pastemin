@@ -4,7 +4,8 @@
 		{
 			"follow_symlinks": true,
 			"path": ".",
-      "folder_exclude_patterns": ["dist", "node_modules"]
+      "folder_exclude_patterns": ["dist", "node_modules", "src/vendor"],
+      "file_exclude_patterns": ["*.aof"]
 		}
 	]
 }

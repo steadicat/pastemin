@@ -6,29 +6,8 @@ var Button = require('../components/Button');
 var Page = require('../components/Page');
 var Editor = require('../components/Editor');
 var Toolbar = require('../components/Toolbar');
-
-function s4() {
-  return Math.floor((1 + Math.random()) * 0x10000)
-             .toString(16)
-             .substring(1);
-};
-
-function guid() {
-  return s4() + s4() + s4();
-}
-
-function debounce(f, rate) {
-  var timeout;
-  return function() {
-    if (timeout) clearTimeout(timeout);
-    var self = this;
-    var args = arguments;
-    timeout = setTimeout(function() {
-      f.apply(self, args);
-      timeout = null;
-    }, rate);
-  };
-}
+var Random = require('../lib/Random');
+var Func = require('../lib/Func');
 
 var Home = React.createClass({
 
@@ -37,40 +16,39 @@ var Home = React.createClass({
       id: this.props.id,
       language: this.props.language || 'javascript',
       cdn: this.props.cdn,
-      changed: !this.props.published
+      changed: !this.props.published,
+      publishedUrl: this.props.publishedUrl
     };
   },
 
   render: function() {
     return (
       <Page title="Pastemin: asset editor and host" props={this.props}>
-        <div className="pvm phh">
-          <h1 className="b ib text-l">Pastemin</h1>
-          <h2 className="ib text-l">: instant assets</h2>
-          <a className="text-s purple mlm pointer">Read more</a>
-          <Button
-            icon="new"
-            color="green"
-            className="mam ib bottom abs top-right"
-            href="/">
-            New
-          </Button>
+        <div className="fixed fill top-left" style={{paddingTop: 210}}>
+          <Editor
+            language={this.state.language}
+            text={this.props.content}
+            onChange={this.onChange}
+          />
         </div>
-        <Toolbar
-          id={this.state.id}
-          language={this.state.language}
-          cdn={this.state.cdn}
-          onCdnToggle={this.onCdnToggle}
-          published={!this.state.changed}
-          onLanguageChange={this.onLanguageChange}
-          onPublish={this.onPublish}
-          className="phh mbl"
-        />
-        <Editor
-          language={this.state.language}
-          text={this.props.content}
-          onChange={this.onChange}
-        />
+        <div className="fixed full-width top-left">
+          <div className="pvh phh center">
+            <h1 className="text-xl title mtl">Pastemin</h1>
+            <h2 className="text-l subtitle">Instant assets.</h2>
+            <a className="text-s purple mth block pointer">Read more</a>
+          </div>
+          <Toolbar
+            id={this.state.id}
+            language={this.state.language}
+            cdn={this.state.cdn}
+            onCdnToggle={this.onCdnToggle}
+            published={!this.state.changed}
+            publishedUrl={this.state.publishedUrl}
+            onLanguageChange={this.onLanguageChange}
+            onPublish={this.onPublish}
+            className="phh"
+          />
+        </div>
       </Page>
     );
   },
@@ -85,13 +63,12 @@ var Home = React.createClass({
     this.save({cdn: cdn});
   },
 
-  onChange: debounce(function(content) {
+  onChange: Func.debounce(function(content) {
     this.setState({changed: true});
     this.save({content: content});
   }, 2000),
 
   onPublish: function() {
-    this.setState({changed: false});
     this.save({published: true});
   },
 
@@ -101,13 +78,16 @@ var Home = React.createClass({
       .set('Accept', 'application/json')
       .send(data).end(function(res) {
         console.log(res.body);
-        this.setState({published: res.body.published});
+        this.setState({
+          changed: !res.body.published,
+          publishedUrl: res.body.url
+        });
       }.bind(this));
   },
 
   componentDidMount: function() {
     if (!this.state.id) {
-      this.setState({id: guid()});
+      this.setState({id: Random.getID()});
       history.replaceState(null, null, '/' + this.state.id);
     }
   }

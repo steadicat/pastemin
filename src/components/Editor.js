@@ -8,10 +8,7 @@ var Editor = React.createClass({
 
   render: function() {
     return (
-      <div id="editor" style={{
-        width: '100%',
-        height: '500px'
-      }}>
+      <div id="editor">
         {this.props.text || defaultText}
       </div>
     );

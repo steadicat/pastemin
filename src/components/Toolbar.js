@@ -6,7 +6,6 @@ var LanguageMenu = require('./LanguageMenu');
 var CdnToggle = require('./CdnToggle');
 var Publish = require('./Publish');
 var Button = require('./Button');
-var Languages = require('../lib/Languages');
 
 var Toolbar = React.createClass({
 
@@ -15,7 +14,7 @@ var Toolbar = React.createClass({
     editToggle = null;
 
     return this.transferPropsTo(
-      <div className="pbm nowrap gray-border" style={{borderWidth: '0 0 1px 0'}}>
+      <div className="pbm nowrap gray-border rel  " style={{borderWidth: '0 0 1px 0'}}>
         <LanguageMenu
           className="ib mid"
           language={this.props.language}
@@ -28,12 +27,19 @@ var Toolbar = React.createClass({
         />
         {editToggle}
         <Publish
-          url={'http://pastemin.com/' + this.props.id + '.' + Languages.getExtension(this.props.language)}
+          url={this.props.publishedUrl}
           published={this.props.published}
           onPublish={this.props.onPublish}
           cdn={this.props.cdn}
           className="ib mid mlm"
         />
+        <Button
+          icon="new"
+          color="green"
+          className="mrm ib bottom abs top-right"
+          href="/">
+          New
+        </Button>
       </div>
     )
   }

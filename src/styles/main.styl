@@ -7,18 +7,27 @@ size(font, line)
   font-size font px
   line-height line px
 html
-  font-family 'Montserrat', sans-serif
+  font-family 'Lato', sans-serif
   size 12, unit * 3
 #editor.ace_editor
   font-family 'Source Code Pro', monospace
 .b
   font-weight bold
-.text-s
-  size 12, unit * 2
+.title
+  font-family 'Playfair Display', sans-serif
+  font-weight: 900
+.subtitle
+  font-family 'Playfair Display', sans-serif
+  font-style: italic
+  font-weight: 400
 .text-xs
   size 10, unit * 2
+.text-s
+  size 12, unit * 2
 .text-l
-  size 24, unit * 3
+  size 24, unit * 4
+.text-xl
+  size unit * 8, unit * 8
 
 .nowrap
   whitespace: nowrap
@@ -72,6 +81,9 @@ for name, color in colors
     @extend .{name}-bg
     border-width 1px
 
+#editor
+  width: 100%
+  height: 100%
 
 // Forms
 
@@ -79,7 +91,7 @@ for name, color in colors
   @extend .gray-border
   @extend .rounded
   @extend .gray
-  padding 6px 8px 5px
+  padding 5px 8px 5px
   margin 0
   line-height 16px
 

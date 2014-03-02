@@ -19,11 +19,11 @@ var clientJs = ['src/client.js', 'src/pages/**/*', 'src/components/**/*'];
 gulp.task('styles', function() {
   return gulp.src('src/styles/**/*.styl')
     .pipe(stylus({ set: ['compress'], use: ['nib'] }))
+    .on('error', gutil.log)
     .pipe(minifycss())
     .pipe(gzip())
     .pipe(gulp.dest('dist/assets/css'))
-    .pipe(livereload(server))
-    .on('error', gutil.log);
+    .pipe(livereload(server));
 });
 
 gulp.task('images', function() {
@@ -42,8 +42,6 @@ gulp.task('client', function() {
       transform: ['reactify']
     }))
     .on('error', gutil.log)
-    //.pipe(jshint('.jshintrc'))
-    //.pipe(jshint.reporter('default'))
     .pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
     .pipe(gzip())
     .pipe(gulp.dest('dist/assets/js/pages'))
