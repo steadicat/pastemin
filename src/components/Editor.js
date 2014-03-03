@@ -2,14 +2,14 @@
 
 var React = require('react');
 
-var defaultText = '/* Type the code of your asset here. */\n\n\n';
+var Languages = require('../lib/Languages');
 
 var Editor = React.createClass({
 
   render: function() {
     return (
       <div id="editor">
-        {this.props.text || defaultText}
+        {this.props.text}
       </div>
     );
   },
@@ -18,7 +18,7 @@ var Editor = React.createClass({
     if (typeof ace !== 'undefined') {
       var editor = this._editor = ace.edit('editor');
       editor.setTheme('ace/theme/tomorrow');
-      editor.session.setMode('ace/mode/' + this.props.language);
+      editor.session.setMode('ace/mode/' + Languages.getSyntax(this.props.language));
       editor.setFontSize(14);
       editor.setHighlightActiveLine(false);
       editor.setShowPrintMargin(false);
@@ -31,7 +31,7 @@ var Editor = React.createClass({
   },
 
   componentDidUpdate: function() {
-    this._editor.session.setMode('ace/mode/' + this.props.language);
+    this._editor.session.setMode('ace/mode/' + Languages.getSyntax(this.props.language));
   },
 
   onChange: function() {

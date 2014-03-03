@@ -7,7 +7,11 @@ var Languages = require('../lib/Languages');
 var LanguageMenu = React.createClass({
   render: function() {
     return this.transferPropsTo(
-      <Dropdown label="Language" options={Languages.byGroup} selected={this.props.language} />
+      <Dropdown
+        label="Language"
+        options={Languages.byGroup()}
+        selected={this.props.language}
+      />
     );
   }
 });

@@ -18,10 +18,10 @@ var Home = React.createClass({
   getInitialState: function() {
     return {
       id: this.props.id,
-      language: this.props.language || 'javascript',
+      language: this.props.language || 'css',
       cdn: this.props.cdn,
       changed: !this.props.published,
-      publishedUrl: this.props.publishedUrl
+      publishedUrl: this.props.url
     };
   },
 
@@ -41,6 +41,7 @@ var Home = React.createClass({
           cdn={this.state.cdn}
           onCdnToggle={this.onCdnToggle}
           published={!this.state.changed}
+          aborted={this.state.aborted}
           publishedUrl={this.state.publishedUrl}
           onLanguageChange={this.onLanguageChange}
           onPublish={this.onPublish}
@@ -63,7 +64,7 @@ var Home = React.createClass({
   },
 
   onChange: Func.debounce(function(content) {
-    this.setState({changed: true});
+    this.setState({changed: true, aborted: false});
     this.save({content: content});
   }, 2000),
 
@@ -75,19 +76,26 @@ var Home = React.createClass({
     SuperAgent
       .put('/' + this.state.id)
       .set('Accept', 'application/json')
-      .send(data).end(function(res) {
+      .send(data)
+      .timeout(5000)
+      .on('error', function(err) {
+        console.warn(err);
+        this.setState({
+          aborted: true
+        });
+      }.bind(this)).end(function(res) {
         this.setState({
           changed: !res.body.published,
-          publishedUrl: res.body.url
+          publishedUrl: res.body.url,
+          aborted: false
         });
       }.bind(this));
   },
 
   componentDidMount: function() {
-    if (!this.state.id) {
-      this.setState({id: Random.getID()});
-      history.replaceState(null, null, '/' + this.state.id);
-    }
+    var id = this.state.id || Random.getID();
+    this.setState({id: id});
+    history.replaceState(null, null, '/' + id);
   }
 
 });

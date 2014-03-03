@@ -4,18 +4,23 @@ var React = require('react');
 var Icon = require('./Icon');
 var Button = require('./Button');
 var HoverMixin = require('./HoverMixin');
+var Obj = require('../lib/Obj');
+var Random = require('../lib/Random');
 
 var Dropdown = React.createClass({
 
   mixins: [HoverMixin],
 
   getInitialState: function() {
-    var group = this.getGroups(this.props.options)[0];
-    var selected = this.getOptions(group).filter(function(option) {
+    this._groups = this.getGroups(this.props.options).map(function(group) {
+      return {name: group, options: this.getOptions(group)};
+    }.bind(this));
+
+    var selected = this._groups[0].options.filter(function(option) {
       return option.id == this.props.selected;
     }.bind(this));
+
     return {
-      group: group,
       selected: selected[0],
       expanded: false
     };
@@ -32,15 +37,15 @@ var Dropdown = React.createClass({
             borderTopColor: '#aeafad',
             minWidth: '100%'
           }}>
-          {this.getGroups(this.props.options).map(function(group) {
+          {this._groups.map(function(group) {
             return (
-              <div key={group}>
-                <div className="gray phm">{group}</div>
-                {this.getOptions(group).map(function(option) {
+              <div key={group.name}>
+                <div className="gray phm">{group.name}</div>
+                {group.options.map(function(option) {
                   return (
                     <div
                       key={option.id}
-                      className={'pointer pll prm' + (this.state.hovered && (this.state.hovered.id == option.id) && (this.state.hovered.group == option.group) ? ' gray-bg white' : '')}
+                      className={'pointer pll prm' + (this.state.hovered && (this.state.hovered._id == option._id) ? ' gray-bg white' : '')}
                       onMouseOver={this.onOptionHover.bind(this, option)}
                       onClick={this.onOptionClick.bind(this, option)}>
                       {option.name}
@@ -93,24 +98,15 @@ var Dropdown = React.createClass({
   },
 
   getGroups: function() {
-    return keys(this.props.options);
+    return Obj.keys(this.props.options);
   },
 
   getOptions: function(group) {
-    var group = this.props.options[group];
-    var options = [];
-    for (var id in group) {
-      options.push({id: id, name: group[id], group: group});
-    }
-    return options;
+    return Obj.values(this.props.options[group]).map(function(x) {
+      return Obj.merge(x, {_id: Random.getID()});
+    });
   }
 
 });
-
-function keys(obj) {
-  var ks = [];
-  for (var k in obj) ks.push(k);
-  return ks;
-}
 
 module.exports = Dropdown;

@@ -29,6 +29,7 @@ var Toolbar = React.createClass({
         <Publish
           url={this.props.publishedUrl}
           published={this.props.published}
+          aborted={this.props.aborted}
           onPublish={this.props.onPublish}
           cdn={this.props.cdn}
           className="ib mid mlm"

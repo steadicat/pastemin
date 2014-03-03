@@ -6,25 +6,24 @@ var connect = require('connect');
 var connectDomain = require('connect-domain');
 var app = express();
 
-//app.use(connectDomain());
+app.use(connectDomain());
 app.use(connect.logger());
 app.use(connect.json());
 app.use(connect.favicon());
-app.use(connect.errorHandler());
 
 var routes = require('./routes');
-routes.init(app);
+app = routes.init(app);
 
-app.use(function(err, req, res, next){
-  sys.log(err.stack);
+app.use(function(err, req, res, next) {
+  sys.log('ERROR ' + err.stack);
   res.send(500, '<pre>' + err.stack + '</pre>')
-})
+});
 
-process.on('uncaughtException', function(e) {
-  sys.log(e.stack)
-})
+process.on('uncaughtException', function(err) {
+  sys.log('FATAL ' + err.stack);
+});
 
 // Only listen on $ node server.js
-var port = parseInt(process.env.PORT, 10) || parseInt(process.argv[2], 10) || 5000
-if (!module.parent) app.listen(port)
-sys.log('Server now listening on port ' + port + '...')
+var port = parseInt(process.env.PORT, 10) || parseInt(process.argv[2], 10) || 5000;
+if (!module.parent) app.listen(port);
+sys.log('Server now listening on port ' + port + '...');

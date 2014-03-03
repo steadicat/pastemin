@@ -51,7 +51,7 @@ var Publish = React.createClass({
   },
 
   updateProgress: function() {
-    this.setState({progress: (this.state.progress * 0.99 + 0.01)});
+    this.setState({progress: (this.state.progress * 0.90 + 0.10)});
   },
 
   componentWillUnmount: function() {
@@ -59,7 +59,8 @@ var Publish = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    if (nextProps.published && !this.props.published) {
+    if (nextProps.aborted || (nextProps.published && !this.props.published)) {
+      clearInterval(this._interval);
       this.setState({publishing: false, progress: 100});
     }
   }

@@ -1,39 +1,50 @@
 var Languages = {};
 
-Languages.byGroup = {
-  Standard: {
-    css: 'CSS',
-    javascript: 'JavaScript'
-  },
-  CSS: {
-    css: 'CSS',
-    sass: 'SASS',
-    scss: 'SCSS',
-    less: 'LESS',
-    stylus: 'Stylus'
-  },
-  JavaScript: {
-    javascript: 'JavaScript',
-    coffeescript: 'CoffeeScript',
-    jsx: 'JSX'
-  }
+var languages = {
+  css: { id: 'css', name: 'CSS', syntax: 'css', output: 'css', categories: ['Standard', 'CSS'] },
+  js: { id: 'js', name: 'JavaScript', syntax: 'javascript', output: 'js', categories: ['Standard', 'JavaScript'] },
+  sass: { id: 'sass', name: 'SASS', syntax: 'sass', output: 'css', categories: ['CSS'] },
+  scss: { id: 'scss', name: 'SCSS', syntax: 'scss', output: 'css', categories: ['CSS'] },
+  less: { id: 'less', name: 'LESS', syntax: 'less', output: 'css', categories: ['CSS'] },
+  styl: { id: 'styl', name: 'Stylus', syntax: 'stylus', output: 'css', categories: ['CSS'] },
+  coffee: { id: 'coffee', name: 'CoffeeScript', syntax: 'coffeescript', output: 'js', categories: ['JavaScript'] },
+  jsx: { id: 'jsx', name: 'JSX', syntax: 'jsx', output: 'js', categories: ['JavaScript'] },
 };
 
-var groupExtensions = {
-  CSS: 'css',
-  JavaScript: 'js'
+var outputs = {
+  css: { id: 'css', type: 'text/css' },
+  js: { id: 'js', type: 'text/javascript' },
 };
 
-var extensions = {};
-
-for (var group in Languages.byGroup) {
-  for (var id in Languages.byGroup[group]) {
-    extensions[id] = groupExtensions[group];
-  }
+function push(object, key, val) {
+  object[key] || (object[key] = []);
+  object[key].push(val);
 }
 
-Languages.getExtension = function(id) {
-  return extensions[id];
+Languages.byGroup = function() {
+  var groups = {};
+  for (var id in languages) {
+    for (var i = 0, l = languages[id].categories.length; i < l; i++) {
+      push(groups, languages[id].categories[i], languages[id]);
+    }
+  }
+  return groups;
+};
+
+Languages.byID = function() {
+  return languages;
+};
+
+Languages.getOutputType = function(id) {
+  return outputs[languages[id].output].type;
+};
+
+Languages.getOutputExtension = function(id) {
+  return outputs[languages[id].output].id;
+};
+
+Languages.getSyntax = function(id) {
+  return languages[id].syntax;
 };
 
 module.exports = Languages;
