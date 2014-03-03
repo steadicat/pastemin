@@ -10,16 +10,16 @@
   "author": "",
   "license": "BSD",
   "dependencies": {
-    "express": "*",
-    "react": "*",
-    "knox": "*",
-    "highland": "*",
-    "superagent": "*",
-    "redis": "*",
-    "connect": "~2.13.0",
-    "uglify-js": "~2.4.12",
+    "express": "~4.0",
+    "react": "~0.9",
+    "knox": "~0.8",
+    "highland": "~1.17",
+    "superagent": "~0.16",
+    "redis": "~0.10",
+    "connect": "~2.13",
+    "uglify-js": "~2.4",
     "zlib": "~1.0.5",
-    "connect-domain": "^0.5.0"
+    "connect-domain": "^0.5"
   },
   "devDependencies": {
     "gulp": "*",
