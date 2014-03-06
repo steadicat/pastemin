@@ -56,7 +56,7 @@ module.exports = {
     });
     */
 
-    app.get(/^\/([a-z0-9]{12})$/, function(req, res) {
+    app.get(/^\/([a-z0-9]{12})?$/, function(req, res) {
       Asset.getOrCreate(req.params[0], function(err, asset) {
         if (err) return error(res, err);
         if (!asset) return notFound(res);

@@ -40,7 +40,7 @@ var Dropdown = React.createClass({
           {this._groups.map(function(group) {
             return (
               <div key={group.name}>
-                <div className="gray phm">{group.name}</div>
+                {this._groups.length && <div className="gray phm">{group.name}</div>}
                 {group.options.map(function(option) {
                   return (
                     <div
