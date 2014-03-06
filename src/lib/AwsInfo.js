@@ -1,4 +1,6 @@
-U2FsdGVkX1/eNLmuxyCVDFR7mk0fuRKXGJkU6rHqdEbNpSS8+XQWwuAersQamHV1
-Iw6tlKspO0OY4usKNLzUYf23XBaf+r9mLGd8POD33W58UlXsHgvtjaVopyzNCMnc
-UWOOA4QL56qGyO7RBWi0sdDjQUF7ue/v5JEXbg9xK4nqvYddkGyoagV5JsqMq1ie
-mk5+cjKy+TBMWX/SH8ikl3E1YhN9pZ65k5JY3CWMFqQzD1jOo1cHzcjpoh2Dsw5+
+module.exports = {
+  key: 'AWS_KEY',
+  secret: 'AWS_SECRET',
+  bucket: 'pastemin',
+  cloudfront: 'd2dsktktxu9rv2.cloudfront.net'
+};
