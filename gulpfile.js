@@ -73,12 +73,13 @@ gulp.task('server', function() {
 });
 
 gulp.task('clean', function() {
-  return gulp.src(['dist/css', 'dist/js', 'dist/img', 'dist/server'], {read: false})
+  return gulp.src(['dist/css', 'dist/js', 'dist/img', 'dist/server', 'dist/assets'], {read: false})
     .pipe(clean())
     .on('error', gutil.log);
 });
 
 gulp.task('watch', function () {
+  gulp.watch([clientJs, serverJs], ['clean'])
   gulp.watch(clientJs, ['client']);
   gulp.watch(serverJs, ['server']);
   gulp.watch('src/styles/**/*', ['styles']);
