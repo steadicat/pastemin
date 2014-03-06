@@ -3,7 +3,7 @@ var sys = require('sys');
 
 var React = require('react');
 var Asset = require('./asset');
-var Home = require('./pages/home');
+var Home = require('./pages/Home');
 
 module.exports = {
   init: function(app) {
